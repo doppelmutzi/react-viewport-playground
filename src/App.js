@@ -3,11 +3,13 @@ import "./App.css";
 import Item from "./Item";
 
 class App extends Component {
+  state = {
+    directionVertical: true,
+    percentVisible: undefined
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      percentVisible: undefined
-    };
     this.children = [];
     this.ulRef = React.createRef();
   }
@@ -65,36 +67,80 @@ class App extends Component {
     this.children.push(item);
   };
 
+  // pitfall with this. state is undefined with handleChange(event) {}
+  // https://stackoverflow.com/a/50111979
+  handleChange = event => {
+    const { value: radioVal } = event.target;
+    const isVerticalDirection = radioVal === "vertical" ? true : false;
+    this.setState(prevState => {
+      return {
+        directionVertical: isVerticalDirection
+      };
+    });
+  };
+
   render() {
     const percentInViewport = this.state.percentVisible;
+    console.log(this.state.directionVertical);
+    const style = {
+      display: this.state.directionVertical ? "flex" : "block"
+    };
     return (
-      <ul className="App" ref={this.ulRef}>
-        <Item
-          name="E1"
-          onRef={this.onRef}
-          percentInViewport={percentInViewport}
-        />
-        <Item
-          name="E2"
-          onRef={this.onRef}
-          percentInViewport={percentInViewport}
-        />
-        <Item
-          name="E3"
-          onRef={this.onRef}
-          percentInViewport={percentInViewport}
-        />
-        <Item
-          name="E4"
-          onRef={this.onRef}
-          percentInViewport={percentInViewport}
-        />
-        <Item
-          name="E5"
-          onRef={this.onRef}
-          percentInViewport={percentInViewport}
-        />
-      </ul>
+      <div className="App" style={style}>
+        <form>
+          <h3>direction</h3>
+          <fieldset>
+            <input
+              checked={this.state.directionVertical}
+              type="radio"
+              name="chooseone"
+              value="vertical"
+              onChange={this.handleChange}
+            />
+            <label htmlFor="vertical">vertical</label>
+          </fieldset>
+          <fieldset>
+            <input
+              checked={!this.state.directionVertical}
+              type="radio"
+              name="chooseone"
+              value="horizontal"
+              onChange={this.handleChange}
+            />
+            <label htmlFor="horizontal">horizontal</label>
+          </fieldset>
+        </form>
+        <ul
+          ref={this.ulRef}
+          className={this.state.directionVertical ? "vertical" : "horizontal"}
+        >
+          <Item
+            name="E1"
+            onRef={this.onRef}
+            percentInViewport={percentInViewport}
+          />
+          <Item
+            name="E2"
+            onRef={this.onRef}
+            percentInViewport={percentInViewport}
+          />
+          <Item
+            name="E3"
+            onRef={this.onRef}
+            percentInViewport={percentInViewport}
+          />
+          <Item
+            name="E4"
+            onRef={this.onRef}
+            percentInViewport={percentInViewport}
+          />
+          <Item
+            name="E5"
+            onRef={this.onRef}
+            percentInViewport={percentInViewport}
+          />
+        </ul>
+      </div>
     );
   }
 }

@@ -47,8 +47,12 @@ class Item extends React.Component {
   render() {
     return (
       <li ref={this.myRef}>
-        <div>{this.props.name}</div>
-        <div>at least this has to be in viewport</div>
+        <div>
+          <p>{this.props.name}</p>
+        </div>
+        <div>
+          <p>at least this has to be in viewport</p>
+        </div>
       </li>
     );
   }

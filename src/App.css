@@ -1,31 +1,90 @@
+form {
+    width: 175px;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    padding: 10px
+}
+
+fieldset {
+    border: 0;
+    padding: 0;
+    margin: 0
+}
+
+fieldset>label {
+    margin-left: 5px;
+}
+
 ul {
     margin: 0;
-    padding: 0 20px;
-    --item-height: 400px;
+    --item-size: 400px;
     --item-visible: .35;
+}
+
+ul.vertical {
+    padding: 0 20px;
+}
+
+ul.horizontal {
+    display: flex;
+    padding: 20px 0;
+    white-space: nowrap;
+    overflow-x: auto;
 }
 
 li {
     background: rgb(223, 91, 91);
-    height: var(--item-height);
+    height: var(--item-size);
+    min-width: var(--item-size);
     list-style: none
 }
 
-li>div {
-    height: calc(var(--item-height) * var(--item-visible));
+p {
+    word-break: break-all;
+    white-space: normal;
+    width: 100%;
+    text-align: center
+}
+
+.vertical li>div {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: calc(var(--item-size) * var(--item-visible));
 }
 
-li>div:first-child {
-    height: calc(var(--item-height) * (1 - var(--item-visible)));
+.vertical li>div:first-child {
+    height: calc(var(--item-size) * (1 - var(--item-visible)));
+}
+
+.horizontal li>div {
+    width: calc(var(--item-size) * var(--item-visible));
+    height: 100%
+}
+
+.horizontal li>div:first-child {
+    width: calc(var(--item-size) * (1 - var(--item-visible)));
 }
 
 li>div+div {
     background: rgb(73, 73, 230);
 }
 
-li+li {
+.horizontal li {
+    display: flex;
+}
+
+.horizontal li>div {
+    display: flex;
+    align-items: center;
+    text-align: center;
+}
+
+.vertical li+li {
     margin-top: 20px;
+}
+
+.horizontal li+li {
+    margin-left: 20px;
 }
