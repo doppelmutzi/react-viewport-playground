@@ -43,6 +43,7 @@ class App extends Component {
     });
   }
 
+  // read initial value from CSS
   retrievePercentVisible() {
     const ul = this.ulRef.current;
     let compStyles = window.getComputedStyle(ul);
@@ -67,9 +68,9 @@ class App extends Component {
     this.children.push(item);
   };
 
-  // pitfall with this. state is undefined with handleChange(event) {}
+  // pitfall with this. state is undefined with handleRadioChange(event) {}
   // https://stackoverflow.com/a/50111979
-  handleChange = event => {
+  handleRadioChange = event => {
     const { value: radioVal } = event.target;
     const isVerticalDirection = radioVal === "vertical" ? true : false;
     this.setState(prevState => {
@@ -79,9 +80,19 @@ class App extends Component {
     });
   };
 
+  handleInputChange = event => {
+    const { value: inputVal } = event.target;
+    this.setState(prevState => {
+      return {
+        percentVisible: inputVal
+      };
+    });
+    // write back value to CSS
+    document.documentElement.style.setProperty("--item-visible", inputVal);
+  };
+
   render() {
     const percentInViewport = this.state.percentVisible;
-    console.log(this.state.directionVertical);
     const style = {
       display: this.state.directionVertical ? "flex" : "block"
     };
@@ -95,7 +106,7 @@ class App extends Component {
               type="radio"
               name="chooseone"
               value="vertical"
-              onChange={this.handleChange}
+              onChange={this.handleRadioChange}
             />
             <label htmlFor="vertical">vertical</label>
           </fieldset>
@@ -105,10 +116,19 @@ class App extends Component {
               type="radio"
               name="chooseone"
               value="horizontal"
-              onChange={this.handleChange}
+              onChange={this.handleRadioChange}
             />
             <label htmlFor="horizontal">horizontal</label>
           </fieldset>
+          <h3>visability</h3>
+          <input
+            type="number"
+            min="0"
+            max="1"
+            step="0.05"
+            placeholder={this.state.percentVisible}
+            onChange={this.handleInputChange}
+          />
         </form>
         <ul
           ref={this.ulRef}
