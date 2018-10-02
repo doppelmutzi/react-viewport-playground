@@ -1,0 +1,31 @@
+ul {
+    margin: 0;
+    padding: 0 20px;
+    --item-height: 400px;
+    --item-visible: .35;
+}
+
+li {
+    background: rgb(223, 91, 91);
+    height: var(--item-height);
+    list-style: none
+}
+
+li>div {
+    height: calc(var(--item-height) * var(--item-visible));
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+li>div:first-child {
+    height: calc(var(--item-height) * (1 - var(--item-visible)));
+}
+
+li>div+div {
+    background: rgb(73, 73, 230);
+}
+
+li+li {
+    margin-top: 20px;
+}
