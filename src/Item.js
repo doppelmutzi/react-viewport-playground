@@ -23,7 +23,7 @@ class Item extends React.Component {
 
   isVisible(callback) {
     const domNode = this.myRef.current;
-    const isVisible = this.isElementVerticallyInViewport(
+    const isVisible = isElementVerticallyInViewport(
       domNode,
       this.props.percentInViewport
     );
@@ -32,7 +32,7 @@ class Item extends React.Component {
 
   onVisibilityChanged(callback) {
     const domNode = this.myRef.current;
-    const isVisible = this.isElementVerticallyInViewport(
+    const isVisible = isElementVerticallyInViewport(
       domNode,
       this.props.percentInViewport
     );
@@ -42,30 +42,6 @@ class Item extends React.Component {
       });
       callback(this.props.name, isVisible);
     }
-  }
-
-  isElementVerticallyInViewport(element, percentInViewport) {
-    const viewportHeight = Math.max(
-      document.documentElement.clientHeight,
-      window.innerHeight || 0
-    );
-
-    const { height, bottom, top } = element.getBoundingClientRect();
-    const isElementAboveViewport = bottom <= 0;
-    if (isElementAboveViewport) {
-      return false;
-    }
-    const isElementBelowViewport = top >= viewportHeight;
-    if (isElementBelowViewport) {
-      return false;
-    }
-    // element is (partly) inside viewport
-    const thresholdPxInViewport = height * percentInViewport;
-    const pxAboveViewport = top < 0 ? top * -1 : 0;
-    const pxBelowViewport =
-      bottom > viewportHeight ? bottom - viewportHeight : 0;
-    const pxInViewport = height - pxAboveViewport - pxBelowViewport;
-    return pxInViewport >= thresholdPxInViewport;
   }
 
   render() {
@@ -81,6 +57,29 @@ class Item extends React.Component {
 Item.propTypes = {
   name: PropTypes.string.isRequired,
   onRef: PropTypes.func.isRequired
+};
+
+export const isElementVerticallyInViewport = (element, percentInViewport) => {
+  const viewportHeight = Math.max(
+    document.documentElement.clientHeight,
+    window.innerHeight || 0
+  );
+
+  const { height, bottom, top } = element.getBoundingClientRect();
+  const isElementAboveViewport = bottom <= 0;
+  if (isElementAboveViewport) {
+    return false;
+  }
+  const isElementBelowViewport = top >= viewportHeight;
+  if (isElementBelowViewport) {
+    return false;
+  }
+  // element is (partly) inside viewport
+  const thresholdPxInViewport = height * percentInViewport;
+  const pxAboveViewport = top < 0 ? top * -1 : 0;
+  const pxBelowViewport = bottom > viewportHeight ? bottom - viewportHeight : 0;
+  const pxInViewport = height - pxAboveViewport - pxBelowViewport;
+  return pxInViewport >= thresholdPxInViewport;
 };
 
 export default Item;

@@ -1,5 +1,5 @@
 import React from "react";
-import Item from "../Item";
+import Item, { isElementVerticallyInViewport } from "../Item";
 import { render, cleanup } from "react-testing-library";
 
 afterEach(cleanup);
@@ -11,7 +11,7 @@ test("<Item/> without props", () => {
   console.error.mockClear();
 });
 
-describe("Item.isElementVerticallyInViewport", () => {
+describe("isElementVerticallyInViewport", () => {
   let item;
   let baseElement;
   let percentInViewport;
@@ -22,7 +22,7 @@ describe("Item.isElementVerticallyInViewport", () => {
     baseElement = document.createElement("li");
     percentInViewport = 0.25;
   });
-  test("Item.isElementVerticallyInViewport with element above viewport returns false", () => {
+  test("isElementVerticallyInViewport with element above viewport returns false", () => {
     Element.prototype.getBoundingClientRect = jest.fn(() => {
       return {
         height: 100,
@@ -31,11 +31,11 @@ describe("Item.isElementVerticallyInViewport", () => {
       };
     });
     expect(
-      item.isElementVerticallyInViewport(baseElement, percentInViewport)
+      isElementVerticallyInViewport(baseElement, percentInViewport)
     ).toBeFalsy();
   });
 
-  test("Item.isElementVerticallyInViewport with element below viewport returns false", () => {
+  test("isElementVerticallyInViewport with element below viewport returns false", () => {
     Element.prototype.getBoundingClientRect = jest.fn(() => {
       return {
         height: 100,
@@ -44,11 +44,11 @@ describe("Item.isElementVerticallyInViewport", () => {
       };
     });
     expect(
-      item.isElementVerticallyInViewport(baseElement, percentInViewport)
+      isElementVerticallyInViewport(baseElement, percentInViewport)
     ).toBeFalsy();
   });
 
-  test("Item.isElementVerticallyInViewport with element completely inside viewport returns true", () => {
+  test("isElementVerticallyInViewport with element completely inside viewport returns true", () => {
     Element.prototype.getBoundingClientRect = jest.fn(() => {
       return {
         height: 100,
@@ -57,11 +57,11 @@ describe("Item.isElementVerticallyInViewport", () => {
       };
     });
     expect(
-      item.isElementVerticallyInViewport(baseElement, percentInViewport)
+      isElementVerticallyInViewport(baseElement, percentInViewport)
     ).toBeTruthy();
   });
 
-  test("Item.isElementVerticallyInViewport with element more than 25% inside viewport returns true", () => {
+  test("isElementVerticallyInViewport with element more than 25% inside viewport returns true", () => {
     Element.prototype.getBoundingClientRect = jest.fn(() => {
       return {
         height: 600,
@@ -70,11 +70,11 @@ describe("Item.isElementVerticallyInViewport", () => {
       };
     });
     expect(
-      item.isElementVerticallyInViewport(baseElement, percentInViewport)
+      isElementVerticallyInViewport(baseElement, percentInViewport)
     ).toBeTruthy();
   });
 
-  test("Item.isElementVerticallyInViewport with element overlapping with viewport returns false", () => {
+  test("isElementVerticallyInViewport with element overlapping with viewport returns false", () => {
     Element.prototype.getBoundingClientRect = jest.fn(() => {
       return {
         height: 600,
@@ -82,6 +82,6 @@ describe("Item.isElementVerticallyInViewport", () => {
         bottom: 500
       };
     });
-    expect(item.isElementVerticallyInViewport(baseElement, 1)).toBeFalsy();
+    expect(isElementVerticallyInViewport(baseElement, 1)).toBeFalsy();
   });
 });
