@@ -2,6 +2,8 @@
 
 React playground for writing algorithms to determine whether DOM elements are inside viewport with respect to different requirements. E.g., is an element 40% vertically visible?
 
+The following picture shows the demo app and how it works.
+
 ![Screenshot of demo app](./react-viewport-playground.png)
 
 ## Things I wanted to learn
