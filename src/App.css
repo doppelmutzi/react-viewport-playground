@@ -32,8 +32,6 @@ ul.vertical {
 ul.horizontal {
     display: flex;
     padding: 20px 0;
-    white-space: nowrap;
-    overflow-x: auto;
 }
 
 li {

@@ -35,11 +35,15 @@ class App extends Component {
 
   processInitialItemVisability() {
     this.children.forEach(item => {
-      item.isVisible((elementName, isVisible) => {
-        console.log(
-          `${elementName} is initially ${isVisible ? "visible" : "invisible"}`
-        );
-      });
+      item.isVisible(
+        // this is the action to execude (e.g., perform tracking)
+        (elementName, isVisible) => {
+          console.log(
+            `${elementName} is initially ${isVisible ? "visible" : "invisible"}`
+          );
+        },
+        this.state.directionVertical
+      );
     });
   }
 
@@ -55,12 +59,13 @@ class App extends Component {
     this.children.forEach(item => {
       if (!item) return;
       item.onVisibilityChanged((elementName, isVisible) => {
+        // this is the action to execude (e.g., perform tracking)
         console.log(
           `${elementName} has changed its visibility to ${
             isVisible ? "visible" : "invisible"
           }`
         );
-      });
+      }, this.state.directionVertical);
     });
   };
 
@@ -73,11 +78,16 @@ class App extends Component {
   handleRadioChange = event => {
     const { value: radioVal } = event.target;
     const isVerticalDirection = radioVal === "vertical" ? true : false;
-    this.setState(prevState => {
-      return {
-        directionVertical: isVerticalDirection
-      };
-    });
+    this.setState(
+      prevState => {
+        return {
+          directionVertical: isVerticalDirection
+        };
+      },
+      () => {
+        this.processInitialItemVisability();
+      }
+    );
   };
 
   handleInputChange = event => {

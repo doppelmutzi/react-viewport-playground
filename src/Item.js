@@ -1,6 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { isElementVerticallyInViewport } from "./viewport";
+import {
+  isElementVerticallyInViewport,
+  isElementHorizontallyInViewport
+} from "./viewport";
 class Item extends React.Component {
   state = { visible: false };
 
@@ -21,18 +24,24 @@ class Item extends React.Component {
     }
   }
 
-  isVisible(callback) {
+  isVisible(callback, isVerticalDirection = true) {
     const domNode = this.myRef.current;
-    const isVisible = isElementVerticallyInViewport(
+    const isElementInViewport = isVerticalDirection
+      ? isElementVerticallyInViewport
+      : isElementHorizontallyInViewport;
+    const isVisible = isElementInViewport(
       domNode,
       this.props.percentInViewport
     );
     callback(this.props.name, isVisible);
   }
 
-  onVisibilityChanged(callback) {
+  onVisibilityChanged(callback, isVerticalDirection = true) {
     const domNode = this.myRef.current;
-    const isVisible = isElementVerticallyInViewport(
+    const isElementInViewport = isVerticalDirection
+      ? isElementVerticallyInViewport
+      : isElementHorizontallyInViewport;
+    const isVisible = isElementInViewport(
       domNode,
       this.props.percentInViewport
     );
